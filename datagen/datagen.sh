@@ -2,17 +2,17 @@
 
 simMemHardware() 
 {
-    for k in {1..2}
+    for mem_config in ./mem_config/*.ini
     do
         echo "Memory $k.ini configuration env..."
-        $m2s --x86-sim detailed --mem-config ./mem-config/$k.ini --x86-config ./x86-config/$2.ini --ctx-config ./ctx-config/$1.ini
+        $m2s --x86-sim detailed --mem-config $k --x86-config $2 --ctx-config $1
         wait
     done
 }
 
 simMultiHardware() 
 {
-    for j in {1..2}
+    for j in ./x86_config/*.ini
     do
         echo "Hardware $j.ini configuration env...\n"
         simMemHardware $1 $j
@@ -21,7 +21,7 @@ simMultiHardware()
 
 runMultiProg()
 {
-    for i in {1..2}
+    for i in ./ctx_config/*.ini
     do
         echo "Program $i benchmarking...\n"
         simMultiHardware $i
