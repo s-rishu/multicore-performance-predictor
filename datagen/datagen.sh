@@ -8,19 +8,23 @@ out=./out
 
 simMemHardware() 
 {
-    for k in ./mem_config/*.ini
+    memconfigs=`ls $mem_dir/* | xargs -n 1 basename`
+    for i in $memconfigs
     do
-        echo "Memory: $k configuration env..."
-        $m2s --x86-sim detailed --x86-config $2 --ctx-config $tmp/$1 &>> $out/$1
+        j="${i%.*}"
+        echo "Memory: $i configuration env..."
+        $m2s --x86-sim detailed --x86-config $x86_dir/$2.ini --ctx-config $tmp/$1.ini &>> $out/$1v$2_$j.ini
         wait
     done
 }
 
 simMultiHardware() 
 {
-    for j in ./x86_config/*.ini
+    x86configs=`ls $x86_dir/* | xargs -n 1 basename`
+    for i in $x86configs
     do
-        echo "Hardware: $j configuration env..."
+        j="${i%.*}"
+        echo "Hardware: $i configuration env..."
         simMemHardware $1 $j
     done
 }
@@ -35,6 +39,7 @@ runMultiProg()
     do
         
         echo "Program: $input benchmarking..."
+        filename="${input%.*}"
 
         for j in 1 2 4 8 16 32 64
         do
@@ -42,7 +47,7 @@ runMultiProg()
             cp -rf $ctx_dir/$input $tmp/$input
             sed -i "s|%NTHREADS|$j|g" $tmp/$input
 	        cat $tmp/$input
-            simMultiHardware $input
+            simMultiHardware $filename
         done
     done
 
