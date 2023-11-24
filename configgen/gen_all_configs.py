@@ -1,3 +1,5 @@
+from itertools import product
+
 def read_ini_file(filename):
     with open(filename, 'r') as f:
         config = {}
