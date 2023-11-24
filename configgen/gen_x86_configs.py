@@ -1,4 +1,11 @@
+import os
 from itertools import product
+from collections import defaultdict
+
+
+def create_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def read_ini_file(filename):
     with open(filename, 'r') as f:
@@ -29,9 +36,19 @@ def generate_permutations(config):
     return result
 
 def print_permutations(perm):
-  config_count = 1
+  config_count = defaultdict(int)
   for config in perm:
-    config_path = "configs/x86_config_{}.ini".format(config_count)
+
+    cores = int(config["General"]["Cores"])
+    threads = int(config["General"]["Threads"])
+
+    config_count["{}_{}".format(cores, threads)] += 1
+    cc = config_count["{}_{}".format(cores, threads)]
+
+    config_dir = "configs/{}/{}".format(cores, threads)
+    create_directory(config_dir)
+    
+    config_path = config_dir + "/x86_config_{}.ini".format(cc)
     with open(config_path, "w") as file:
      for section, values in config.items():
         file.write("[ {} ]\n".format(section))
