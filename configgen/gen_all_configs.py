@@ -6,13 +6,17 @@ def read_ini_file(filename):
         for line in f:
             if line.startswith('['):
                 section = line.strip('[]').strip()
+                print(section)
                 config[section] = {}
             elif '=' in line:
                 key, value = line.strip().split('=')
                 key = key.strip()
+                print(key)
                 if value.startswith('[') and value.endswith(']'):
                     value = value.strip('[]').strip().split(',')
                 config[section][key] = value
+                print(value)
+    print(config)
     return config
 
 def generate_permutations(config):
