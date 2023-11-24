@@ -1,0 +1,5 @@
+ProgId,x86Config,MemConfig,RealTime,Instructions,InstructionsPerSecond,SimTime,Frequency,Cycles,CyclesPerSecond,FastForwardInstructions,CommittedInstructions,CommittedInstructionsPerCycle,CommittedMicroInstructions,CommittedMicroInstructionsPerCycle,BranchPredictionAccuracy
+5,1,1,2.46,35147,14276,89081.00,1000,89081,36182,0,10189,0.1144,17211,0.1932,0.7299
+5,1,1,2.37,35152,14847,89083.00,1000,89083,37626,0,10196,0.1145,17218,0.1933,0.7302
+5,1,1,2.43,35152,14488,89083.00,1000,89083,36715,0,10196,0.1145,17218,0.1933,0.7302
+5,1,1,2.52,35156,13957,89085.00,1000,89085,35368,0,10203,0.1145,17225,0.1934,0.7305
