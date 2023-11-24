@@ -37,7 +37,7 @@ def print_permutations(config):
                 print(f'{key} = {value}')
 
 if __name__ == '__main__':
-    filename = 'config.ini'
+    filename = 'x86_config.ini'
     config = read_ini_file(filename)
     config = generate_permutations(config)
     print_permutations(config)
