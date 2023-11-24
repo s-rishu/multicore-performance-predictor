@@ -45,9 +45,9 @@ def print_permutations(perm):
     config_count["{}_{}".format(cores, threads)] += 1
     cc = config_count["{}_{}".format(cores, threads)]
 
-    config_dir = "configs/{}/{}".format(cores, threads)
+    config_dir = "configs/x86_configs/{}/{}".format(cores, threads)
     create_directory(config_dir)
-    
+
     config_path = config_dir + "/x86_config_{}.ini".format(cc)
     with open(config_path, "w") as file:
      for section, values in config.items():

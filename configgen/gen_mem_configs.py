@@ -1,7 +1,13 @@
-from itertools import product
 import os
+from itertools import product
+from collections import defaultdict
+
 cores=[1,2,4,8,16,32,64,128]
 threads=[1,2,4,8,16]
+
+def create_directory(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
 
 def read_ini_file(filename):
     with open(filename, 'r') as f:
@@ -81,10 +87,17 @@ def process_permutations(perm, core, thread):
         
     return new_result
 
-def print_permutations(perm, core, thread):
-  config_count = 1
+def print_permutations(perm, cores, threads):
+  config_count = defaultdict(int)
+
   for config in perm:
-    config_path = "configs/mem_config_{}.ini".format(config_count)
+    config_count["{}_{}".format(cores, threads)] += 1
+    cc = config_count["{}_{}".format(cores, threads)]
+
+    config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
+    create_directory(config_dir)
+    
+    config_path = config_dir + "/mem_config_{}.ini".format(cc)
     with open(config_path, "w") as file:
      for section, values in config.items():
         file.write("[ {} ]\n".format(section))
