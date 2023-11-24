@@ -11,7 +11,7 @@ simMemHardware()
     for k in ./mem_config/*.ini
     do
         echo "Memory: $k configuration env..."
-        $m2s --x86-sim detailed --x86-config $3 --ctx-config $tmp/$1 &>> ($out/$1)
+        $m2s --x86-sim detailed --x86-config $2 --ctx-config $tmp/$1 &>> $out/$1
         wait
     done
 }
@@ -21,7 +21,7 @@ simMultiHardware()
     for j in ./x86_config/*.ini
     do
         echo "Hardware: $j configuration env..."
-        simMemHardware $1 $2 $j
+        simMemHardware $1 $j
     done
 }
 
