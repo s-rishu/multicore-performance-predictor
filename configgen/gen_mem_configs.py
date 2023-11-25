@@ -6,6 +6,8 @@ from collections import defaultdict
 cores=[1,2,4,8,16,32,64,128]
 threads=[1,2,4,8,16]
 
+SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE"]
+
 def create_directory(path):
     if not os.path.exists(path):
         os.makedirs(path)
@@ -41,8 +43,8 @@ def read_ini_file(filename):
 def generate_permutations(config):
     print("generating permutations..")
     fields = list(config.keys())
-    print(fields)
-    field_values = [np.array(config[field][param]) for field in config for param in config[field]]
+    #print(fields)
+    field_values = [np.array(config[field][param]) for field in config for param in config[field] if field not in SINGLE_DIM_FIELDS]
     print(field_values)
     all_permutations = cartesian_product_mixed_type(*field_values) #list(product(*field_values))
     print(all_permutations)
@@ -51,13 +53,17 @@ def generate_permutations(config):
     for value in all_permutations:
         value_idx = 0
         permutation_dict = {}
+            
         for i, field in enumerate(fields):
-            field_dict = {}
-            for j, param in enumerate(config[field]):
-                field_dict[param] = value[j+value_idx]
-                print(j + value_idx)
-            permutation_dict[field] = field_dict
-            value_idx = j+value_idx+1
+            if field in SINGLE_DIM_FIELDS:
+                permutation_dict[field] = config[field]
+            else:
+                field_dict = {}
+                for j, param in enumerate(config[field]):
+                    field_dict[param] = value[j+value_idx]
+                    print(j + value_idx)
+                permutation_dict[field] = field_dict
+                value_idx = j+value_idx+1
         result.append(permutation_dict)
     print("done generating permutations..")
     return result
