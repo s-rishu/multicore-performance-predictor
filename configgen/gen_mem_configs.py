@@ -138,7 +138,7 @@ def print_permutations(perm, cores, threads):
      print(cc)
 
 if __name__ == '__main__':
-    mem_filename = 'test.ini'
+    mem_filename = 'mem_config.ini'
     mem_config = read_ini_file(mem_filename)
     #print(mem_config)
     mem_config = generate_permutations(mem_config)
