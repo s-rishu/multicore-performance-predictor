@@ -7,7 +7,7 @@ from collections import defaultdict
 cores=[1,2,4,8,16,32,64,128]
 threads=[1,2,4,8,16]
 
-SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE"]
+SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE-$THREAD"]
 config_count = defaultdict(int)
 
 def create_directory(path):
