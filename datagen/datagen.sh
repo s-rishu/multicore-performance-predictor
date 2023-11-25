@@ -1,31 +1,35 @@
 #!/bin/sh
 
 ctx_dir=./ctx_config
-x86_dir=./x86_config
-mem_dir=./mem_config
+x86_dir=../configgen/configs/x86_configs
+mem_dir=../configgen/configs/mem_configs
 tmp=./tmp
 out=./out
 
 simMemHardware() 
 {
-    memconfigs=`ls $mem_dir/* | xargs -n 1 basename`
+    memconfigs=`ls $mem_dir/$2/* | xargs -n 1 basename`
     for i in $memconfigs
     do
         j="${i%.*}"
         echo "Memory: $i configuration env..."
-        $m2s --x86-sim detailed --x86-config $x86_dir/$2.ini --ctx-config $tmp/$1.ini &>> $out/$1v$2_$j.ini
+        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini &>> $out/$1v$2_$3_$j.ini
         wait
     done
 }
 
 simMultiHardware() 
 {
-    x86configs=`ls $x86_dir/* | xargs -n 1 basename`
-    for i in $x86configs
+    folders=`ls -d -- $x86_dir/*/ | xargs -n 1 basename`
+    for f in $folders
     do
-        j="${i%.*}"
-        echo "Hardware: $i configuration env..."
-        simMemHardware $1 $j
+	x86configs=`ls $x86_dir/$f/* | xargs -n 1 basename`
+    	for i in $x86configs
+    	do
+            j="${i%.*}"
+	    echo "Hardware: $i configuration env..."
+    	    simMemHardware $1 $f $j
+        done
     done
 }
 
