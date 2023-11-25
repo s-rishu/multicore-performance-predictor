@@ -5,7 +5,7 @@ import numpy as np
 from collections import defaultdict
 
 cores=[1,2,4,8,16,32,64,128]
-threads=[1,2,4,8,16]
+threads=[2]
 
 SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE-$THREAD"]
 config_count = defaultdict(int)
@@ -129,7 +129,7 @@ def process_permutations(config, core, thread):
 def print_permutations(config, cores, threads):
     config_count["{}_{}".format(cores, threads)] += 1
     cc = config_count["{}_{}".format(cores, threads)]
-    config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
+    config_dir = "configs/mem_configs/{}".format(cores)
     create_directory(config_dir)
 
   #for config in perm:
