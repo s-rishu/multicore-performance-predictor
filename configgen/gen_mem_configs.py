@@ -140,7 +140,7 @@ def print_permutations(config, cores, threads):
             file.write("[ {} ]\n".format(section))
             for key, value in values.items():
                 file.write('{} = {}\n'.format(key, value))
-                file.write('\n')
+            file.write('\n')
     print("config count:{}".format(cc))
 
 if __name__ == '__main__':
