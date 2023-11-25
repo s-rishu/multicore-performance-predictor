@@ -66,7 +66,7 @@ def generate_permutations(config):
                     #print(j + value_idx)
                 permutation_dict[field] = field_dict
                 value_idx = j+value_idx+1
-        print(permutation_dict)
+        
         for core in cores:
             for thread in threads:
                 new_mem_config = process_permutations(copy.deepcopy(permutation_dict), core, thread)
@@ -77,7 +77,7 @@ def generate_permutations(config):
 
 def process_permutations(config, core, thread):
     #new_result = []
-    print("processing for cores: {}, threads: {}".format(core, thread))
+    # print("processing for cores: {}, threads: {}".format(core, thread))
     #for config in perm:
     #print(config.keys())
     entry_temp = config.pop("Entry Core-$CORE-$THREAD")
@@ -134,7 +134,7 @@ def print_permutations(config, cores, threads):
 
   #for config in perm:
     #config_count += 1
-    config_path = config_dir + "/mem_config_{}.ini".format(cc)
+    config_path = config_dir + "/{}.ini".format(cc)
     with open(config_path, "w") as file:
         for section, values in config.items():
             file.write("[ {} ]\n".format(section))

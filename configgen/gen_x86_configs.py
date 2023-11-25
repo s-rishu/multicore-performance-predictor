@@ -45,18 +45,17 @@ def print_permutations(perm):
     config_count["{}_{}".format(cores, threads)] += 1
     cc = config_count["{}_{}".format(cores, threads)]
 
-    config_dir = "configs/x86_configs/{}/{}".format(cores, threads)
+    config_dir = "configs/x86_configs/{}".format(cores)
     create_directory(config_dir)
 
-    config_path = config_dir + "/x86_config_{}.ini".format(cc)
+    config_path = config_dir + "/{}.ini".format(cc)
     with open(config_path, "w") as file:
      for section, values in config.items():
         file.write("[ {} ]\n".format(section))
         for key, value in values.items():
            file.write('{} = {}\n'.format(key, value))
         file.write('\n')
-     config_count += 1
-     print(config_count)
+     print(cc)
 
 if __name__ == '__main__':
     filename = 'x86_config.ini'
