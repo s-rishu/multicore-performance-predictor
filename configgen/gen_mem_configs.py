@@ -45,9 +45,9 @@ def generate_permutations(config):
     fields = list(config.keys())
     #print(fields)
     field_values = [np.array(config[field][param]) for field in config for param in config[field] if field not in SINGLE_DIM_FIELDS]
-    print(field_values)
+    #print(field_values)
     all_permutations = cartesian_product_mixed_type(*field_values) #list(product(*field_values))
-    print(all_permutations)
+    #print(all_permutations)
     result = []
 
     for value in all_permutations:
@@ -64,6 +64,7 @@ def generate_permutations(config):
                     print(j + value_idx)
                 permutation_dict[field] = field_dict
                 value_idx = j+value_idx+1
+        print(permutation_dict)
         result.append(permutation_dict)
     print("done generating permutations..")
     return result
@@ -132,14 +133,14 @@ def print_permutations(perm, cores, threads):
         for key, value in values.items():
            file.write('{} = {}\n'.format(key, value))
         file.write('\n')
-     print(config_count)
+     print("config count:{}".format(config_count))
 
 if __name__ == '__main__':
     mem_filename = 'mem_config.ini'
     mem_config = read_ini_file(mem_filename)
     #print(mem_config)
     mem_config = generate_permutations(mem_config)
-    print(mem_config)
+    #print(mem_config)
     import copy
     for core in cores:
         for thread in threads:
