@@ -1,5 +1,5 @@
-ProgId,x86Config,MemConfig,RealTime,Instructions,InstructionsPerSecond,SimTime,Frequency,Cycles,CyclesPerSecond,FastForwardInstructions,CommittedInstructions,CommittedInstructionsPerCycle,CommittedMicroInstructions,CommittedMicroInstructionsPerCycle,BranchPredictionAccuracy
-5,1,1,2.46,35147,14276,89081.00,1000,89081,36182,0,10189,0.1144,17211,0.1932,0.7299
-5,1,1,2.37,35152,14847,89083.00,1000,89083,37626,0,10196,0.1145,17218,0.1933,0.7302
-5,1,1,2.43,35152,14488,89083.00,1000,89083,36715,0,10196,0.1145,17218,0.1933,0.7302
-5,1,1,2.52,35156,13957,89085.00,1000,89085,35368,0,10203,0.1145,17225,0.1934,0.7305
+ProgId,Cores,Threads,PageSize,MemFrequency,BlockSize,Latency,L1_Sets,L1_Assoc,L1_BlockSize,L1_Latency,L2_Sets,L2_Assoc,L2_BlockSize,L2_Latency,L3_Sets,L3_Assoc,L3_BlockSize,L3_Latency,Instructions,InstructionsPerSecond,SimTime,Frequency,Cycles,CyclesPerSecond,FastForwardInstructions,CommittedInstructions,CommittedInstructionsPerCycle,CommittedMicroInstructions,CommittedMicroInstructionsPerCycle,BranchPredictionAccuracy
+5,4,1,4096,2000,256,200,128,2,256,2,512,4,256,20,512,4,256,20,35147,14276,89081.00,5000,89081,36182,0,10189,0.1144,17211,0.1932,0.7299
+5,4,1,4096,2000,256,200,128,2,256,2,512,4,256,20,512,4,256,20,35152,14847,89083.00,5000,89083,37626,0,10196,0.1145,17218,0.1933,0.7302
+5,4,1,4096,2000,256,200,128,2,256,2,512,4,256,20,512,4,256,20,35152,14488,89083.00,5000,89083,36715,0,10196,0.1145,17218,0.1933,0.7302
+5,4,1,4096,2000,256,200,128,2,256,2,512,4,256,20,512,4,256,20,35156,13957,89085.00,5000,89085,35368,0,10203,0.1145,17225,0.1934,0.7305
