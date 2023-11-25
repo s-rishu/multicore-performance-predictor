@@ -5,6 +5,8 @@ x86_dir=../configgen/configs/x86_configs
 mem_dir=../configgen/configs/mem_configs
 tmp=./tmp
 out=./out
+memout=./memout
+sysout=./sysout
 
 simMemHardware() 
 {
@@ -13,7 +15,7 @@ simMemHardware()
     do
         j="${i%.*}"
         echo "Memory: $i configuration env..."
-        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini &>> $out/$1v$2_$3_$j.ini
+        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini --mem-report $mem/$1v$4_$2_$3_$j.ini --x86-debug-syscall $sysout/$1v$4_$2_$3_$j.ini &>> $out/$1v$4_$2_$3_$j.ini
         wait
     done
 }
@@ -28,7 +30,7 @@ simMultiHardware()
     	do
             j="${i%.*}"
 	    echo "Hardware: $i configuration env..."
-    	    simMemHardware $1 $f $j
+    	    simMemHardware $1 $f $j $2
         done
     done
 }
@@ -51,7 +53,7 @@ runMultiProg()
             cp -rf $ctx_dir/$input $tmp/$input
             sed -i "s|%NTHREADS|$j|g" $tmp/$input
 	        cat $tmp/$input
-            simMultiHardware $filename
+            simMultiHardware $filename $j
         done
     done
 
