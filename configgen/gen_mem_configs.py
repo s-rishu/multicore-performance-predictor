@@ -119,23 +119,20 @@ def process_permutations(perm, core, thread):
     return new_result
 
 def print_permutations(perm, cores, threads):
-  config_count = defaultdict(int)
+  config_count = 0
+  config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
+  create_directory(config_dir)
 
   for config in perm:
-    config_count["{}_{}".format(cores, threads)] += 1
-    cc = config_count["{}_{}".format(cores, threads)]
-
-    config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
-    create_directory(config_dir)
-
-    config_path = config_dir + "/mem_config_{}.ini".format(cc)
+    config_count += 1
+    config_path = config_dir + "/mem_config_{}.ini".format(config_count)
     with open(config_path, "w") as file:
      for section, values in config.items():
         file.write("[ {} ]\n".format(section))
         for key, value in values.items():
            file.write('{} = {}\n'.format(key, value))
         file.write('\n')
-     print(cc)
+     print(config_count)
 
 if __name__ == '__main__':
     mem_filename = 'mem_config.ini'
