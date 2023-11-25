@@ -1,4 +1,5 @@
 import os
+import copy
 import itertools
 import numpy as np
 from collections import defaultdict
@@ -7,6 +8,7 @@ cores=[1,2,4,8,16,32,64,128]
 threads=[1,2,4,8,16]
 
 SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE"]
+config_count = defaultdict(int)
 
 def create_directory(path):
     if not os.path.exists(path):
@@ -48,7 +50,7 @@ def generate_permutations(config):
     #print(field_values)
     all_permutations = cartesian_product_mixed_type(*field_values) #list(product(*field_values))
     #print(all_permutations)
-    result = []
+    #result = []
 
     for value in all_permutations:
         value_idx = 0
@@ -61,79 +63,85 @@ def generate_permutations(config):
                 field_dict = {}
                 for j, param in enumerate(config[field]):
                     field_dict[param] = value[j+value_idx]
-                    print(j + value_idx)
+                    #print(j + value_idx)
                 permutation_dict[field] = field_dict
                 value_idx = j+value_idx+1
         print(permutation_dict)
-        result.append(permutation_dict)
+        for core in cores:
+            for thread in threads:
+                new_mem_config = process_permutations(copy.deepcopy(permutation_dict), core, thread)
+                print_permutations(new_mem_config, core, thread)
+        #result.append(permutation_dict)
     print("done generating permutations..")
-    return result
+    #return result
 
-def process_permutations(perm, core, thread):
-    new_result = []
+def process_permutations(config, core, thread):
+    #new_result = []
     print("processing for cores: {}, threads: {}".format(core, thread))
-    for config in perm:
-        print(config.keys())
-        entry_temp = config.pop("Entry Core-$CORE-$THREAD")
-        module_cache_l1i_temp =  config.pop("Module CacheL1-I-$CORE")
-        module_cache_l1d_temp =  config.pop("Module CacheL1-D-$CORE")
-        module_cache_l2_temp =  config.pop("Module CacheL2-$CORE")
-        network_temp =  config.pop("Network Network$NET")
-        new_config = config
-        for c in range(core):
-            print("processing for cores: {}".format(core))
-            #entry  
-            for t in range(thread):
-                new_key = "Entry Core-{}-{}".format(c,t)
-                new_config[new_key] = {}
-                for key, value in entry_temp.items():
-                    new_config[new_key][key] = value.replace("$CORE",str(c)).replace("$THREAD", str(t))
-            #l1i
-            new_key = "Module CacheL1-I-{}".format(c)
+    #for config in perm:
+    #print(config.keys())
+    entry_temp = config.pop("Entry Core-$CORE-$THREAD")
+    module_cache_l1i_temp =  config.pop("Module CacheL1-I-$CORE")
+    module_cache_l1d_temp =  config.pop("Module CacheL1-D-$CORE")
+    module_cache_l2_temp =  config.pop("Module CacheL2-$CORE")
+    network_temp =  config.pop("Network Network$NET")
+    new_config = config
+    for c in range(core):
+        print("processing for cores: {}".format(core))
+        #entry  
+        for t in range(thread):
+            new_key = "Entry Core-{}-{}".format(c,t)
             new_config[new_key] = {}
-            for key, value in  module_cache_l1i_temp.items():
-                new_config[new_key][key] = value.replace("$CORE", str(c))
+            for key, value in entry_temp.items():
+                new_config[new_key][key] = value.replace("$CORE",str(c)).replace("$THREAD", str(t))
+        #l1i
+        new_key = "Module CacheL1-I-{}".format(c)
+        new_config[new_key] = {}
+        for key, value in  module_cache_l1i_temp.items():
+            new_config[new_key][key] = value.replace("$CORE", str(c))
 
-            #l1d
-            new_key = "Module CacheL1-D-{}".format(c)
-            new_config[new_key] = {}
-            for key, value in  module_cache_l1d_temp.items():
-                new_config[new_key][key] = value.replace("$CORE", str(c))
+        #l1d
+        new_key = "Module CacheL1-D-{}".format(c)
+        new_config[new_key] = {}
+        for key, value in  module_cache_l1d_temp.items():
+            new_config[new_key][key] = value.replace("$CORE", str(c))
 
-            #l2
-            new_key = "Module CacheL2-{}".format(c)
-            new_config[new_key] = {}
-            for key, value in  module_cache_l2_temp.items():
-                new_config[new_key][key] = value.replace("$CORE", str(c))
+        #l2
+        new_key = "Module CacheL2-{}".format(c)
+        new_config[new_key] = {}
+        for key, value in  module_cache_l2_temp.items():
+            new_config[new_key][key] = value.replace("$CORE", str(c))
 
-            #l2l1 network
-            new_key = "Network NetworkL2L1-{}".format(c)
-            new_config[new_key] = network_temp
+        #l2l1 network
+        new_key = "Network NetworkL2L1-{}".format(c)
+        new_config[new_key] = network_temp
 
-        #network
-        for net in ["MainL3", "L3L2"]:
-            new_key = "Network Network{}".format(net)
-            new_config[new_key] = network_temp
+    #network
+    for net in ["MainL3", "L3L2"]:
+        new_key = "Network Network{}".format(net)
+        new_config[new_key] = network_temp
 
-        new_result.append(new_config)
+    #new_result.append(new_config)
 
-    return new_result
+    #return new_result
+    return new_config
 
-def print_permutations(perm, cores, threads):
-  config_count = 0
-  config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
-  create_directory(config_dir)
+def print_permutations(config, cores, threads):
+    config_count["{}_{}".format(cores, threads)] += 1
+    cc = config_count["{}_{}".format(cores, threads)]
+    config_dir = "configs/mem_configs/{}/{}".format(cores, threads)
+    create_directory(config_dir)
 
-  for config in perm:
-    config_count += 1
-    config_path = config_dir + "/mem_config_{}.ini".format(config_count)
+  #for config in perm:
+    #config_count += 1
+    config_path = config_dir + "/mem_config_{}.ini".format(cc)
     with open(config_path, "w") as file:
-     for section, values in config.items():
-        file.write("[ {} ]\n".format(section))
-        for key, value in values.items():
-           file.write('{} = {}\n'.format(key, value))
-        file.write('\n')
-     print("config count:{}".format(config_count))
+        for section, values in config.items():
+            file.write("[ {} ]\n".format(section))
+            for key, value in values.items():
+                file.write('{} = {}\n'.format(key, value))
+                file.write('\n')
+    print("config count:{}".format(cc))
 
 if __name__ == '__main__':
     mem_filename = 'mem_config.ini'
@@ -141,8 +149,7 @@ if __name__ == '__main__':
     #print(mem_config)
     mem_config = generate_permutations(mem_config)
     #print(mem_config)
-    import copy
-    for core in cores:
-        for thread in threads:
-             new_mem_config = process_permutations(copy.deepcopy(mem_config), core, thread)
-             print_permutations(new_mem_config, core, thread)
+    # for core in cores:
+    #     for thread in threads:
+    #          new_mem_config = process_permutations(copy.deepcopy(mem_config), core, thread)
+    #          print_permutations(new_mem_config, core, thread)
