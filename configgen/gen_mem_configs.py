@@ -4,7 +4,7 @@ import itertools
 import numpy as np
 from collections import defaultdict
 
-cores=[1,2,4,8,16,32,64,128]
+cores=[16]
 threads=[2]
 
 SINGLE_DIM_FIELDS = ["Module CacheL3", "Network Network$NET", "Module CacheL2-$CORE", "Module CacheL1-D-$CORE", "Module CacheL1-I-$CORE", "Entry Core-$CORE-$THREAD"]
