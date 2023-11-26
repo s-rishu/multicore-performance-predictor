@@ -26,16 +26,13 @@ simMultiHardware()
     folders=`ls -d -- $x86_dir/*/ | xargs -n 1 basename`
     for f in $folders
     do
-        if [ $2 -ge $f ]
-        then
-            x86configs=`ls $x86_dir/$f/* | xargs -n 1 basename`
-            for i in $x86configs
-            do
-                j="${i%.*}"
-            echo "Hardware: $i configuration env..."
-                simMemHardware $1 $f $j $2
-            done
-        fi
+        x86configs=`ls $x86_dir/$f/* | xargs -n 1 basename`
+        for i in $x86configs
+        do
+            j="${i%.*}"
+        echo "Hardware: $i configuration env..."
+            simMemHardware $1 $f $j $2
+        done
     done
 }
 
