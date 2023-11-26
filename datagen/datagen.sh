@@ -15,7 +15,8 @@ simMemHardware()
     do
         j="${i%.*}"
         echo "Memory: $i configuration env..."
-        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini --mem-report $memout/$1v$4_$2_$3_$j.ini --x86-debug-syscall $sysout/$1v$4_$2_$3_$j.ini &>> $out/$1v$4_$2_$3_$j.ini
+        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini \ 
+        --mem-report $memout/$1v$4_$2_$3_$j.ini --x86-debug-syscall $sysout/$1v$4_$2_$3_$j.ini &>> $out/$1v$4_$2_$3_$j.ini
         wait
     done
 }
