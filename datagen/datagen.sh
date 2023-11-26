@@ -15,8 +15,7 @@ simMemHardware()
     do
         j="${i%.*}"
         echo "Memory: $i configuration env..."
-        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini \ 
-        --mem-report $memout/$1v$4_$2_$3_$j.ini --x86-debug-syscall $sysout/$1v$4_$2_$3_$j.ini &> $out/$1v$4_$2_$3_$j.ini &
+        $m2s --x86-sim detailed --x86-config $x86_dir/$2/$3.ini --mem-config $mem_dir/$2/$j.ini --ctx-config $tmp/$1.ini --mem-report $memout/$1v$4_$2_$3_$j.ini --x86-debug-syscall $sysout/$1v$4_$2_$3_$j.ini &> $out/$1v$4_$2_$3_$j.ini &
         wait
     done
 }
@@ -30,7 +29,7 @@ simMultiHardware()
         for i in $x86configs
         do
             j="${i%.*}"
-        echo "Hardware: $i configuration env..."
+            echo "Hardware: $i configuration env..."
             simMemHardware $1 $f $j $2
         done
     done
@@ -44,7 +43,6 @@ runMultiProg()
 
     for input in $configs
     do
-        
         echo "Program: $input benchmarking..."
         filename="${input%.*}"
 
