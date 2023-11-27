@@ -7,7 +7,7 @@ global_columns = ["ProgId", "pThreads", "Mem_Hits", "Mem_Misses",
                   "Mem_Latency", "L1_Sets", "L1_Latency", "L1_Hits", "L1_Misses",
                   "L2_Sets", "L2_Latency", "L2_Hits", "L2_Misses", "L3_Hits", "L3_Misses",
                   "Instructions", "InstructionsPerSecond", "SimTime",
-                  "Frequency", "Cycles", "CyclesPerSecond",
+                  "Cycles", "CyclesPerSecond",
                   "CommittedInstructions", "CommittedInstructionsPerCycle", "CommittedMicroInstructions", 
                   "CommittedMicroInstructionsPerCycle", "BranchPredictionAccuracy"]
 global_data = []
@@ -51,8 +51,9 @@ def MergeStats(outStats, x86Stats, memStats):
     return stats
  
 def read_ini_file(filename):
+    section = ""
+    stats = {}
     with open(filename, 'r') as f:
-        stats = {}
         for line in f:
             if line.startswith(';'):
                 continue
@@ -63,7 +64,7 @@ def read_ini_file(filename):
                 if section not in stats:
                     stats[section] = {}
     
-            elif '=' in line:
+            elif '=' in line and section != '':
                 key, value = line.strip().split('=')
                 key = key.strip()
  
@@ -121,17 +122,18 @@ def readData():
         [progId, input, pthreads, cores, x86config, memconfig] = re.findall(r'\d+', filename)
 
         file_path = os.path.join(detailsPath, filename)
-        if os.path.isfile(file_path):
+        memoutfile = os.path.join(memoutPath, filename)
 
+        if os.path.isfile(memoutfile) and os.path.isfile(file_path):
             stats = read_ini_file(file_path)
             x86Stats = read_ini_file(x86Path + cores + '/' + x86config + '.ini')
             memStats = read_ini_file(memPath + cores + '/' + memconfig + '.ini')
 
-            hitRates = get_hit_rate(os.path.join(memoutPath, filename))
-            stats = MergeStats(outStats=stats, x86Stats=x86Stats, memStats=memStats)
-                    
-            put_in_arr(stats, progId, hitRates, pthreads)
-        
+            if len(stats) and len(x86Stats) and len(memStats):
+                hitRates = get_hit_rate(memoutfile)
+                stats = MergeStats(outStats=stats, x86Stats=x86Stats, memStats=memStats)
+                        
+                put_in_arr(stats, progId, hitRates, pthreads)
     dumpcsv()
 
 readData()
