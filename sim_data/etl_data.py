@@ -3,11 +3,11 @@ import os
 import pandas as pd
 
 # Global csv data
-global_columns = ["ProgId", "pThreads", "Mem_HitRate",
-                  "Mem_Latency", "L1_Sets", "L1_Latency", "L1_HitRate",
-                  "L2_Sets", "L2_Latency", "L2_HitRate", "L3_HitRate",
+global_columns = ["ProgId", "pThreads", "Mem_Hits", "Mem_Misses",
+                  "Mem_Latency", "L1_Sets", "L1_Latency", "L1_Hits", "L1_Misses",
+                  "L2_Sets", "L2_Latency", "L2_Hits", "L2_Misses", "L3_Hits", "L3_Misses",
                   "Instructions", "InstructionsPerSecond", "SimTime",
-                  "Frequency", "Cycles", "CyclesPerSecond", "FastForwardInstructions",
+                  "Frequency", "Cycles", "CyclesPerSecond",
                   "CommittedInstructions", "CommittedInstructionsPerCycle", "CommittedMicroInstructions", 
                   "CommittedMicroInstructionsPerCycle", "BranchPredictionAccuracy"]
 global_data = []
@@ -76,22 +76,22 @@ def read_ini_file(filename):
     return stats # Only returning x86 statistics
 
 def get_hit_rate(memfile) :
-    hitRates = {"Mem_HitRate": 0, "L1_HitRate": 0, "L2_HitRate": 0, "L3_HitRate": 0}
+    hitRates = {"Mem_Hits": 0, "L1_Hits": 0, "L2_Hits": 0, "L3_Hits": 0, "Mem_Misses": 0, "L1_Misses": 0, "L2_Misses": 0, "L3_Misses": 0}
     memout = read_ini_file(memfile)
     for key, val in memout.items():
         if key == "MainMemory":
-            hitRates["Mem_HitRate"] = max(float(val["HitRatio"]), hitRates["Mem_HitRate"])
+            hitRates["Mem_Hits"] = max(float(val["Hits"]), hitRates["Mem_Hits"])
+            hitRates["Mem_Misses"] = max(float(val["Misses"]), hitRates["Mem_Misses"])
         elif key == "CacheL3":
-            hitRates["L3_HitRate"] = max(float(val["HitRatio"]), hitRates["L3_HitRate"])
+            hitRates["L3_Hits"] = max(float(val["Hits"]), hitRates["L3_Hits"])
+            hitRates["L1_Misses"] = max(float(val["Misses"]), hitRates["L1_Misses"])
         elif key.startswith("CacheL1"):
-            hitRates["L1_HitRate"] = max(float(val["HitRatio"]), hitRates["L1_HitRate"])
+            hitRates["L1_Hits"] = max(float(val["Hits"]), hitRates["L1_Hits"])
+            hitRates["L1_Misses"] = max(float(val["Misses"]), hitRates["L1_Misses"])
         elif key.startswith("CacheL2"):
-            hitRates["L2_HitRate"] = max(float(val["HitRatio"]), hitRates["L2_HitRate"])
+            hitRates["L2_Hits"] = max(float(val["Hits"]), hitRates["L2_Hits"])
+            hitRates["L3_Misses"] = max(float(val["Misses"]), hitRates["L3_Misses"])
     
-    for key, val in hitRates.items():
-        if val == 0:
-            hitRates[key] = 1
-
     return hitRates
 
 def put_in_arr(stats, progId, hitRates, pthreads): 
