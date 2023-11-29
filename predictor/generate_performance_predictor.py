@@ -108,20 +108,21 @@ lr_model.fit(X_train, Y_train)
 Y_pred = lr_model.predict(X_test)
 
 # get maximum residual error
-print("Maximum Residual Error: {}".format(max_error(Y_test, Y_pred)))
+print("Test outcomes for linear regression:\n")
+print("Maximum Residual Error: {}\n".format(max_error(Y_test, Y_pred)))
 
 # get mean squared error
-print("Mean Squared Error: {}".format(mean_squared_error(Y_test, Y_pred)))
+print("Mean Squared Error: {}\n".format(mean_squared_error(Y_test, Y_pred)))
 
 # get mean absolute error
-print("Mean Absolute Error: {}".format(mean_absolute_error(Y_test, Y_pred)))
+print("Mean Absolute Error: {}\n".format(mean_absolute_error(Y_test, Y_pred)))
 
 #check accuracy percentage with absolute prediction error <0.5
 absolute_error = abs(Y_test - Y_pred)
 within_range_count = sum(absolute_error <= 0.5)
 percentage_within_range = (within_range_count / len(Y_test)) * 100
 
-print(f"Percentage of Y_pred values with prediction error within +0.5 to -0.5: {percentage_within_range:.2f}%")
+print(f"Percentage of Y_pred values with prediction error within +0.5 to -0.5: {percentage_within_range:.2f}%\n")
 
 # save the model to disk
 filename = 'lr_model.sav'
@@ -139,20 +140,21 @@ dtr_model.fit(X_train, Y_train)
 Y_pred = dtr_model.predict(X_test)
 
 # get maximum residual error
-print("Maximum Residual Error: {}".format(max_error(Y_test, Y_pred)))
+print("Test outcomes for decision tree regression:\n")
+print("Maximum Residual Error: {}\n".format(max_error(Y_test, Y_pred)))
 
 # get mean squared error
-print("Mean Squared Error: {}".format(mean_squared_error(Y_test, Y_pred)))
+print("Mean Squared Error: {}\n".format(mean_squared_error(Y_test, Y_pred)))
 
 # get mean absolute error
-print("Mean Absolute Error: {}".format(mean_absolute_error(Y_test, Y_pred)))
+print("Mean Absolute Error: {}\n".format(mean_absolute_error(Y_test, Y_pred)))
 
 #check accuracy percentage with absolute prediction error <0.5
 absolute_error = abs(Y_test - Y_pred)
 within_range_count = sum(absolute_error <= 0.5)
 percentage_within_range = (within_range_count / len(Y_test)) * 100
 
-print(f"Percentage of Y_pred values with prediction error within +0.5 to -0.5: {percentage_within_range:.2f}%")
+print(f"Percentage of Y_pred values with prediction error within +0.5 to -0.5: {percentage_within_range:.2f}%\n")
 
 # print("Feature Names in Decision Tree Model: \n", dtr_model.feature_names_in_)
 # print("Feature Importance in Decision Tree Model: \n", dtr_model.feature_importances_)

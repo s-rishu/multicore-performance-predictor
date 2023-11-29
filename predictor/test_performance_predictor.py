@@ -12,7 +12,7 @@ dtr_filename = "dtr_model.sav"
 dtr_model = pickle.load(open(dtr_filename, 'rb'))
 
 #load input test file
-input_filename = "example_test_input.yml"
+input_filename = "test_input.yml"
 input = open(input_filename, "r")
 input_dict = yaml.load(input,Loader=yaml.Loader)
 input_df = pd.DataFrame.from_dict(input_dict)
