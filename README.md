@@ -25,3 +25,7 @@ This command needs to be run in the same folder containing the `<exename>` to be
 The data will be outputed on the screen as well as `<path-to-mem-output-file>` file. Using these two data points, populate the fields of `.\predictor\test_input.yml` (Check `.\predictor\example_test_input.yml` for a sample). After that, do the following steps:
 1. `cd .\predictor\`
 2. `python3 test_performance_predictor.py` 
+
+#### Code Reused from sources:
+1. https://github.com/imsure/parallel-programming/blob/master/red-black-grid-computation/rb-grid-pthread.c
+2. https://github.com/imsure/parallel-programming/blob/master/matrix-multiplication/matrix-mul-pthread.c
