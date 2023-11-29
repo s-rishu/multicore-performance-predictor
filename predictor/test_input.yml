@@ -1,0 +1,13 @@
+Mem_Latency: <Latency of main memory in number of cycles>
+L1_Sets: <Number of L1 sets>
+L1_Latency: <Latency of L1 in number of cycles>
+L2_Sets: <Number of L2 sets>
+L2_Latency: <Latency of L2 in number of cycles>
+L1_Hits_1Thread: <Number of L1 hits for 1 thread>
+L1_Misses_1Thread: <Number of L1 misses for 1 thread>
+L2_Hits_1Thread: <Number of L3 hits for 1 thread>
+L3_Misses_1Thread: <Number of L3 misses for 1 thread>
+Instructions_1Thread: <Number of instructions for 1 thread run>
+Instructions_2Thread: <Number of instructions for 2 thread run>
+BranchPredictionAccuracy_1Thread: <Branch prediction accuracy for 1 thread run between 0 and 1>
+pThreads: <Number of threads for speedup prediction>
