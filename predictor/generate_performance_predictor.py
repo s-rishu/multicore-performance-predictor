@@ -88,9 +88,8 @@ ax.set_xticklabels(
     ax.get_xticklabels(),
     rotation=45,
     horizontalalignment='right'
-);
+)
 
-# TODO: remove features if needed
 # print("Final modelling attributes along with target variable:\n\n")
 # print(data.dtypes)
 
