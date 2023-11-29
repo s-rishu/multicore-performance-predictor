@@ -3,7 +3,7 @@ import os
 import pandas as pd
 
 # Global csv data
-global_columns = ["ProgId", "pThreads", "Mem_Hits", "Mem_Misses",
+global_columns = ["ProgId", "InputId", "pThreads", "ConfigId", "Mem_Hits", "Mem_Misses",
                   "Mem_Latency", "L1_Sets", "L1_Latency", "L1_Hits", "L1_Misses",
                   "L2_Sets", "L2_Latency", "L2_Hits", "L2_Misses", "L3_Hits", "L3_Misses",
                   "Instructions", "InstructionsPerSecond", "SimTime",
@@ -95,13 +95,17 @@ def get_hit_rate(memfile) :
     
     return hitRates
 
-def put_in_arr(stats, progId, hitRates, pthreads): 
+def put_in_arr(stats, progId, hitRates, pthreads, input, memconfig): 
     row = []
     for key in global_columns:
         if key == "ProgId":
             row.append(progId)
         elif key == "pThreads":
             row.append(pthreads)
+        elif key == "ConfigId":
+            row.append(memconfig)
+        elif key == "InputId":
+            row.append(input)
         elif key in stats:
             row.append(stats[key])
         elif key in hitRates:
@@ -133,7 +137,7 @@ def readData():
                 hitRates = get_hit_rate(memoutfile)
                 stats = MergeStats(outStats=stats, x86Stats=x86Stats, memStats=memStats)
                         
-                put_in_arr(stats, progId, hitRates, pthreads)
+                put_in_arr(stats, progId, hitRates, pthreads, input, memconfig)
     dumpcsv()
 
 readData()
